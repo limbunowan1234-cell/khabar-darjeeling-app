@@ -11,6 +11,11 @@ workflows:
           cd KhabarWebView
           npm install
 
+      - name: Copy assets from sibling folder
+        script: |
+          mkdir -p KhabarWebView/assets
+          cp KhabarDarjeelingExpo/assets/*.png KhabarWebView/assets/
+
       - name: Expo prebuild
         script: |
           cd KhabarWebView
@@ -21,7 +26,6 @@ workflows:
           cd KhabarWebView/android
           chmod +x gradlew
           ./gradlew assembleRelease --no-daemon -x lint
-          # Rename APK
           find app/build/outputs/apk/release/ -name "*.apk" | head -1 | xargs -I{} mv {} app/build/outputs/apk/release/KhabarDarjeeling-v1.0.0.apk
 
     artifacts:
