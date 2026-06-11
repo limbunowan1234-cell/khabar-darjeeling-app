@@ -1,0 +1,36 @@
+workflows:
+  android-webview-apk:
+    name: Khabar Darjeeling WebView APK
+    max_build_duration: 60
+    environment:
+      node: 18
+      java: 17
+    scripts:
+      - name: Install dependencies
+        script: |
+          cd KhabarWebView
+          npm install
+
+      - name: Expo prebuild
+        script: |
+          cd KhabarWebView
+          npx expo prebuild --platform android --clean
+
+      - name: Build Release APK
+        script: |
+          cd KhabarWebView/android
+          chmod +x gradlew
+          ./gradlew assembleRelease --no-daemon -x lint
+          # Rename APK
+          find app/build/outputs/apk/release/ -name "*.apk" | head -1 | xargs -I{} mv {} app/build/outputs/apk/release/KhabarDarjeeling-v1.0.0.apk
+
+    artifacts:
+      - KhabarWebView/android/app/build/outputs/apk/release/KhabarDarjeeling-v1.0.0.apk
+
+    publishing:
+      email:
+        recipients:
+          - limbunowan1234@gmail.com
+        notify:
+          success: true
+          failure: true
