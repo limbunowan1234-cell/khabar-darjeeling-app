@@ -11,11 +11,6 @@ workflows:
           cd KhabarWebView
           npm install
 
-      - name: Copy assets from sibling folder
-        script: |
-          mkdir -p KhabarWebView/assets
-          cp KhabarDarjeelingExpo/assets/*.png KhabarWebView/assets/
-
       - name: Expo prebuild
         script: |
           cd KhabarWebView
