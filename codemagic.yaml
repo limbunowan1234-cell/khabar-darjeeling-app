@@ -14,10 +14,6 @@ workflows:
         script: |
           cd KhabarDarjeelingExpo
           npx expo prebuild --platform android --clean
-      - name: Set APK name
-        script: |
-          cd KhabarDarjeelingExpo/android/app
-          sed -i 's/android {/android {\n    buildOutputs.all { output ->\n        output.outputFileName = "KhabarDarjeeling-v${versionName}.apk"\n    }/' build.gradle
       - name: Bundle JavaScript
         script: |
           cd KhabarDarjeelingExpo
@@ -33,8 +29,10 @@ workflows:
           cd KhabarDarjeelingExpo/android
           chmod +x gradlew
           ./gradlew assembleDebug --no-daemon -x lint
+          mv app/build/outputs/apk/debug/app-debug.apk \
+             app/build/outputs/apk/debug/KhabarDarjeeling-v1.0.0.apk
     artifacts:
-      - KhabarDarjeelingExpo/android/app/build/outputs/apk/debug/KhabarDarjeeling-*.apk
+      - KhabarDarjeelingExpo/android/app/build/outputs/apk/debug/KhabarDarjeeling-v1.0.0.apk
     publishing:
       email:
         recipients:
