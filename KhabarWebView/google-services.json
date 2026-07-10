@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1041440947512",
+    "project_id": "khabar-darjeeling-app",
+    "storage_bucket": "khabar-darjeeling-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1041440947512:android:c42e46da0416ce8b13d5cd",
+        "android_client_info": {
+          "package_name": "com.khabardarjeeling.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3MpzcMJrjY2GD9Ynz7qiGJbujP7fQaSA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
