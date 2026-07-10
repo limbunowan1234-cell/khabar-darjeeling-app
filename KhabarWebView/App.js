@@ -8,13 +8,54 @@ import {
   BackHandler,
   StatusBar,
   Platform,
+  PermissionsAndroid,
 } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
+import messaging from '@react-native-firebase/messaging';
 
 const WEBSITE_URL = 'https://khabardarjeeling.space';
 const BRAND_RED = '#c41e3a';
 const BG = '#0f0f0f';
+
+const APPWRITE_ENDPOINT = 'https://api.khabardarjeeling.space/v1';
+const APPWRITE_PROJECT = 'khabardarjeeling';
+const APPWRITE_DB = 'Khabar_db';
+
+async function registerFcmToken(userId) {
+  try {
+    if (Platform.OS === 'android' && Platform.Version >= 33) {
+      await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+    }
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+    if (!enabled) return;
+
+    const token = await messaging().getToken();
+    if (!token) return;
+
+    await fetch(APPWRITE_ENDPOINT + '/databases/' + APPWRITE_DB + '/collections/fcm_tokens/documents', {
+      method: 'POST',
+      headers: {
+        'X-Appwrite-Project': APPWRITE_PROJECT,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        documentId: 'unique()',
+        data: {
+          userId,
+          token,
+          platform: 'android',
+          createdAt: new Date().toISOString(),
+        },
+      }),
+    });
+  } catch (err) {
+    console.log('FCM registration failed:', err);
+  }
+}
 
 function AppContent() {
   const insets = useSafeAreaInsets();
@@ -41,6 +82,18 @@ function AppContent() {
     setError(false);
     setLoading(true);
     webViewRef.current?.reload();
+  };
+
+  // Receive messages from the website (login/logout bridge)
+  const handleWebViewMessage = (event) => {
+    try {
+      const msg = JSON.parse(event.nativeEvent.data);
+      if (msg.type === 'AUTH' && msg.userId) {
+        registerFcmToken(msg.userId);
+      }
+    } catch (err) {
+      // ignore non-JSON messages
+    }
   };
 
   return (
@@ -100,6 +153,7 @@ function AppContent() {
             setCanGoBack(state.canGoBack);
             setCurrentUrl(state.url);
           }}
+          onMessage={handleWebViewMessage}
           // Make it feel like a native app
           allowsBackForwardNavigationGestures={true}
           pullToRefreshEnabled={true}
