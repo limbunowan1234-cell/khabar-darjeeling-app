@@ -163,6 +163,19 @@ function AppContent() {
           domStorageEnabled={true}
           startInLoadingState={false}
           scalesPageToFit={false}
+          // CRITICAL: Force mobile viewport BEFORE the page's own JS runs its mobile-detection check
+          injectedJavaScriptBeforeContentLoaded={`
+            (function() {
+              var meta = document.querySelector('meta[name="viewport"]');
+              if (!meta) {
+                meta = document.createElement('meta');
+                meta.name = 'viewport';
+                (document.head || document.getElementsByTagName('head')[0]).appendChild(meta);
+              }
+              meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover';
+            })();
+            true;
+          `}
           // Inject mobile meta tag for better display
           injectedJavaScript={`
             (function() {
