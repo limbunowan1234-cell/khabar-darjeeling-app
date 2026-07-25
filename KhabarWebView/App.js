@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+﻿import React, { useState, useRef } from 'react';
 import {
   StyleSheet,
   View,
@@ -14,11 +14,11 @@ import { WebView } from 'react-native-webview';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import messaging from '@react-native-firebase/messaging';
 
-const WEBSITE_URL = 'https://khabardarjeeling.space';
+const WEBSITE_URL = 'https://khabardarjeeling.in';
 const BRAND_RED = '#c41e3a';
 const BG = '#0f0f0f';
 
-const APPWRITE_ENDPOINT = 'https://api.khabardarjeeling.space/v1';
+const APPWRITE_ENDPOINT = 'https://api.khabardarjeeling.in/v1';
 const APPWRITE_PROJECT = 'khabardarjeeling';
 const APPWRITE_DB = 'Khabar_db';
 
