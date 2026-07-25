@@ -166,6 +166,9 @@ function AppContent() {
           useWideViewPort={true}
           loadWithOverviewMode={true}
           textZoom={100}
+          androidLayerType="software"
+          setBuiltInZoomControls={false}
+          setDisplayZoomControls={false}
           // CRITICAL: Force mobile viewport BEFORE the page's own JS runs its mobile-detection check
           injectedJavaScriptBeforeContentLoaded={`
             (function() {
