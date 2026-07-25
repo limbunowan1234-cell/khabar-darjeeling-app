@@ -163,6 +163,9 @@ function AppContent() {
           domStorageEnabled={true}
           startInLoadingState={false}
           scalesPageToFit={false}
+          useWideViewPort={true}
+          loadWithOverviewMode={true}
+          textZoom={100}
           // CRITICAL: Force mobile viewport BEFORE the page's own JS runs its mobile-detection check
           injectedJavaScriptBeforeContentLoaded={`
             (function() {
